@@ -1,0 +1,9 @@
+streamlit
+numpy
+PIL
+pandas
+numpy
+seaborn
+matplotlib.pyplot
+requests
+time
