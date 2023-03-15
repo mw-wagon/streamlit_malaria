@@ -110,11 +110,6 @@ st.button('RUN MODEL')
 
 # API call with st.progress displayed for the user to get FINAL OUTPUT i.e. table and graph
 
-# code_2 = '''here is where the API CALL goes which RETURNS the categories/binary ouput'''
-    #url = '?' #model on GC
-    #myobj = {'filename': image_file.name}
-    #blood_sample_categories = requests.post(url, json = myobj).json # here we need the model to return us a dictionary (json) with categories (2) and the number of cells per category.
-
 # here is the st.progress widget which displays progress as a function of time using the time package while the code is executed (i.e. the API call)
 # with st.progress(0, text = 'Operation in progress. Please wait.'):
 #     for percent_complete in range(100):
