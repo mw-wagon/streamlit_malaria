@@ -56,8 +56,10 @@ st.text('')
 st.text('')
 st.text('')
 col11.image(blood_microscope_slide, use_column_width=True)
-col22.header('Upload your blood sample.')
-col22.write('After extracting and preparing the blood sample, the scientific image can be uploaded for scanning using our Testing Area.')
+col22.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>Upload your blood sample.</h4>",
+                    unsafe_allow_html=True)
+col22.markdown("<h4 style='text-align: left; color: black; font-size: 120%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>After extracting and preparing the blood sample, the scientific image can be uploaded for scanning using our Testing Area.</h4>",
+                    unsafe_allow_html=True)
 
 # how it works - step 2
 
@@ -65,8 +67,10 @@ col111,col222 = st.columns([1,2])
 st.text('')
 st.text('')
 st.text('')
-col111.header('Our model will prepare the image for individual cell scanning.')
-col111.write('Leveraging YOLO\'s real-time object detection, our product will identify all cells within the image with the use of bounding boxes.')
+col111.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>Our model will prepare the image for individual cell scanning.</h4>",
+                    unsafe_allow_html=True)
+col111.markdown("<h4 style='text-align: left; color: black; font-size: 120%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>Leveraging YOLO\'s real-time object detection, our product will identify all cells within the image with the use of bounding boxes.</h4>",
+                    unsafe_allow_html=True)
 col222.image(bounding_boxes_img, use_column_width=True)
 
 # how it works - step 3
@@ -75,9 +79,11 @@ col1111,col2222 = st.columns([2,1])
 st.text('')
 st.text('')
 st.text('')
+col2222.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>Virtual Information Transformer.</h4>",
+                    unsafe_allow_html=True)
+col2222.markdown("<h4 style='text-align: left; color: black; font-size: 120%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>Our model will make a prediction on each input cell based on what it has learned from 80,000 categorized cells.</h4>",
+                    unsafe_allow_html=True)
 col1111.image(purple_cells)
-col2222.header('The data will flow through our Convolutional Neural Network.')
-col2222.write('Our deep-learning model will take the unique cells within bounding boxes as an input to compare them against what it has learned from a dataset with 80,000 categorized cells.')
 
 # how it works - step 4
 
@@ -85,8 +91,10 @@ col11111,col22222 = st.columns([1,2])
 st.text('')
 st.text('')
 st.text('')
-col11111.header('All cells in the scientific sample will be classified into one of six categories.')
-col11111.write('Our model will output whether a scanned cell is infected or not, as well as the stage of infection, by displaying the cell category: Gametocyte, Leukocyte, Red Blood Cell, Ring, Schizont, Trophozoite.')
+col11111.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>Cells are classified into infection categories.</h4>",
+                    unsafe_allow_html=True)
+col11111.markdown("<h4 style='text-align: left; color: black; font-size: 120%; text-shadow: 1px 1px #cfc9c9; padding: 30px 30px 10px 30px; line-height: 1.5'>If an infection is detected, our model will label the cell based on the spreading stage: Gametocyte, Leukocyte, Ring, Schizont, Trophozoite.</h4>",
+                    unsafe_allow_html=True)
 # col22222.image() pending -- want to add an image of the table with the classified cells
 
 # meet the team photos and names
