@@ -1,4 +1,5 @@
 import streamlit as st
+import cv2
 import numpy as np
 from PIL import Image
 import pandas as pd
@@ -7,6 +8,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import requests
 import time
+import json
+from io import BytesIO
 
 # images
 
@@ -48,7 +51,24 @@ st.text('')
 st.text('')
 
 # two tabs, 1. upload a photo file and 2.connect to system's webcam
-# API call for the user to see image with BOUNDING BOXES displayed
+# includes API call for the user to see image with BOUNDING BOXES displayed
+
+# first quickly define the function that transforms bounding boxes coordinates into an image
+
+def get_bounding_box_image(df, image):
+# Load the image; Plot the image; print(image.shape); Define the boxes
+    boxes = []
+    for index, row in df.iterrows():
+        x = round(row['xmin'])
+        y = round(row['ymin'])
+        x_max = round(row['xmax'])
+        y_max = round(row['ymax'])
+        # breakpoint()
+        img = cv2.rectangle(image, (x, y), (x_max, y_max), (255,0,0), 2)
+    # Add the boxes to the plot
+    return img
+
+### TABS
 
 tab1, tab2, = st.tabs(["UPLOAD A BLOOD SAMPLE", "CONNECT TO MY CAMERA OR WEBCAM"])
 
@@ -62,20 +82,30 @@ with tab1:
             # output a small image for the user to confirm that it is the right blood sample
             col_sample.image(uploaded_sample, use_column_width=True)
         with col_text:
-            st.write('This is the blood sample selected.')
-            st.write('Please click "proceed" if you want to process this file:')
+            st.subheader('This is the blood sample selected.')
+            st.subheader('Please confirm if you want to process this file.')
+            if 'bounded_image' in st.session_state.keys():
+                bounding_boxes = st.session_state['bounded_image']
             st.text('')
             st.text('')
             st.text('')
             # user clicks proceed for bounding boxes to be drawn around cells in sample
-            if col_text.button('PROCEED', key=0):
+            if col_text.button(label='CONFIRM AND PROCEED', key=0):
                 st.success('Success! Your sample is being processed...')
                 # API CALL
                 res = requests.post('http://127.0.0.1:8000' + "/upload_image", files={'img': img_bytes})
-                bounding_boxes = res.content
+                df = pd.DataFrame.from_dict(json.loads(res.content))
+                bounding_boxes = get_bounding_box_image(df, np.asarray(uploaded_sample))
+                # im = cv2.imencode('.png', bounding_boxes)[1]
+                im = Image.fromarray(bounding_boxes).convert('RGB')
+                buffered = BytesIO()
+                im.save(buffered, format="JPEG")
+                byte_im = buffered.getvalue()
                 # display bounding_boxes_image and allow the user to download the file
                 st.image(bounding_boxes)
-                st.download_button(label='DOWNLOAD FILE', data=bounding_boxes, file_name='Bounding-Boxes', mime = "image/png")
+                st.text('')
+                st.text('')
+                st.download_button(label='DOWNLOAD FILE', data=byte_im, file_name='Bounding-Boxes.png', mime = "image/png")
 
 with tab2:
     image_file = st.camera_input("TAKE A PICTURE")
@@ -87,12 +117,16 @@ with tab2:
         col_text.write('This is the blood sample that will be uploaded.')
         col_text.write('Please click "proceed" below if you want to process this sample:')
         # user clicks proceed for bounding boxes to be drawn around cells in sample
+        if 'bounded_image' in st.session_state.keys():
+            bounding_boxes = st.session_state['bounded_image']
+            st.image(bounding_boxes)
         if col_button.button('PROCEED',key=1):
             st.success('Success! Your sample is being processed...')
             # API CALL
             res = requests.post('http://127.0.0.1:8000' + "/upload_image", files={'img': img_bytes})
             bounding_boxes = res.content
             # display bounding_boxes_image and allow the user to download the file
+            st.session_state['bounded_image'] = bounding_boxes
             st.image(bounding_boxes)
             st.download_button(label='DOWNLOAD FILE', data=bounding_boxes, file_name='Bounding-Boxes', mime = "image/png")
 
@@ -106,7 +140,20 @@ st.write('Our model will determine malaria infection levels of the patient. Resu
 st.text('')
 st.text('')
 st.text('')
-st.button('RUN MODEL')
+
+# when button is pressed, it will run through the if statement depending on whether an infection has been detected
+
+if st.button(label='GENERATE DIAGNOSIS', key=3):
+    categories = df['name'].unique()
+    if 'infected' not in categories:
+        st.success('No parasitaemia detected in sample!')
+    else:
+        mask1 = iter_df['name'] == 'uninfected'
+        mask2 = iter_df['name'] == 'leukocyte'
+        df = iter_df.loc[~mask1]
+        df = df.loc[~mask2]
+        return df
+    return
 
 # API call with st.progress displayed for the user to get FINAL OUTPUT i.e. table and graph
 

@@ -1,6 +1,7 @@
 streamlit
 numpy
 PIL
+cv2
 pandas
 numpy
 seaborn
