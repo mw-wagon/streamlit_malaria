@@ -1,0 +1,42 @@
+/* HOMEPAGE */
+/* #CE3150 */
+
+/* customisation of the CNN text on the homepage */
+[class="css-1r6slb0 e1tzin5v2"] {
+  width: 1px;
+  background-image: url(https://storage.cloud.google.com/malari-eye-sidebar-photo/Components-Background.png);
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px 2px #cfc9c9;
+  text-align: center;
+}
+
+/* SIDEBAR */
+
+/* customisation of the side bar element Main Menu */
+[class="css-uc76bn e1fqkh3o7"]::before {
+  content: "Menu";
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-block-end: 20px;
+  font-size: 30px;
+  position: static;
+  top: 100px;
+  background-image: url(https://storage.cloud.google.com/malari-eye-sidebar-photo/Components-Background.png);
+  border-radius: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+[class="css-j7qwjs e1fqkh3o5"] {
+  margin-top: 30px;
+  background-image: url(https://storage.cloud.google.com/malari-eye-sidebar-photo/Components-Background.png);
+  border-radius: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.css-f61rl6{
+  text-shadow: 3px #cfc9c9;
+}
