@@ -13,7 +13,7 @@ from io import BytesIO
 
 # images
 
-malari_eye_logo = Image.open('/Users/aliciademora/code/aliciademorauk/project/frontend_malaria/streamlit_malaria/app/images/Malaria-Logo.png')
+malari_eye_logo = Image.open('./images/Malaria-Logo.png')
 
 # page configuration...
 # page title, layout
@@ -47,8 +47,6 @@ st.subheader('Please follow the steps below to generate a diagnosis.')
 
 st.header('Step 1')
 st.text('')
-st.text('')
-st.text('')
 
 # two tabs, 1. upload a photo file and 2.connect to system's webcam
 # includes API call for the user to see image with BOUNDING BOXES displayed
@@ -57,16 +55,18 @@ st.text('')
 
 def get_bounding_box_image(df, image):
 # Load the image; Plot the image; print(image.shape); Define the boxes
-    boxes = []
+    resized_cells = []
+    img = image.copy()
     for index, row in df.iterrows():
         x = round(row['xmin'])
         y = round(row['ymin'])
         x_max = round(row['xmax'])
         y_max = round(row['ymax'])
         # breakpoint()
-        img = cv2.rectangle(image, (x, y), (x_max, y_max), (255,0,0), 2)
+        img = cv2.rectangle(img, (x, y), (x_max, y_max), (255,0,0), 2)
+        resized_cells.append(image[x:x_max, y:y_max, :])
     # Add the boxes to the plot
-    return img
+    return img, np.array(resized_cells)
 
 ### TABS
 
@@ -95,7 +95,7 @@ with tab1: # upload a photo
                 # API CALL
                 res = requests.post('http://127.0.0.1:8000' + "/upload_image", files={'img': img_bytes})
                 df = pd.DataFrame.from_dict(json.loads(res.content))
-                bounding_boxes = get_bounding_box_image(df, np.asarray(uploaded_sample))
+                bounding_boxes, resized_cells = get_bounding_box_image(df, np.asarray(uploaded_sample))
                 im = Image.fromarray(bounding_boxes).convert('RGB')
                 buffered = BytesIO()
                 im.save(buffered, format="JPEG")
@@ -103,7 +103,9 @@ with tab1: # upload a photo
                 # display bounding_boxes_image with cell count in caption and allow the user to download the file
                 cell_count = df.shape[0]
                 st.session_state['bounded_image'] = bounding_boxes
-                st.image(image=bounding_boxes,caption=f'Number of cells detected {cell_count}.')
+                st.image(image=bounding_boxes)
+                st.write(f'{cell_count} cells have been detected in the sample.')
+                st.write('You can download this image below.')
                 st.text('')
                 st.text('')
                 # allow the user to download the file
@@ -137,7 +139,9 @@ with tab2: # take a picture
             # display bounding_boxes_image with cell count in caption and allow the user to download the file
             cell_count = df.shape[0]
             st.session_state['bounded_image'] = bounding_boxes
-            st.image(image=bounding_boxes,caption=f'Number of cells detected {cell_count}.')
+            st.image(image=bounding_boxes)
+            st.subheader(f'{cell_count} cells have been detected in the sample.')
+            st.subheader('You can download this image below.')
             st.text('')
             st.text('')
             # allow the user to download the file
@@ -147,10 +151,11 @@ with tab2: # take a picture
 
 st.header('Step 2')
 st.text('')
-st.text('')
-st.text('')
-st.subheader('Our model will determine the infection stage of the patient.')
-st.subheader('Please click on "generate diagnosis" below to see results.')
+tab_1 = st.tabs(['DIAGNOSIS GENERATION'])
+with tab_1:
+    st.write('Our model will determine the infection stage of the patient.')
+    st.write('Please click on "generate diagnosis" below to see results.')
+
 st.text('')
 st.text('')
 st.text('')

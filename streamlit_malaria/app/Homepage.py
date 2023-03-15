@@ -11,11 +11,11 @@ import time
 from streamlit.components.v1 import html
 
 # images:
-malaria_parasite_bright = Image.open('/Users/aliciademora/code/aliciademorauk/project/frontend_malaria/streamlit_malaria/app/images/Rounded-Bright-Cells.png')
-malaria_parasite_red = Image.open('/Users/aliciademora/code/aliciademorauk/project/frontend_malaria/streamlit_malaria/app/images/Cell-Homepage2.png')
-malari_eye_logo = Image.open('/Users/aliciademora/code/aliciademorauk/project/frontend_malaria/streamlit_malaria/app/images/Malaria-Logo.png')
-malaria_parasite = Image.open('/Users/aliciademora/code/aliciademorauk/project/frontend_malaria/streamlit_malaria/app/images/Malaria-Parasite.jpeg')
-africa_spread = Image.open('/Users/aliciademora/code/aliciademorauk/project/frontend_malaria/streamlit_malaria/app/images/Africa-Spread-PhotoRoom.png')
+malaria_parasite_bright = Image.open('./images/Rounded-Bright-Cells.png')
+malaria_parasite_red = Image.open('./images/Cell-Homepage2.png')
+malari_eye_logo = Image.open('./images/Malaria-Logo.png')
+malaria_parasite = Image.open('./images/Malaria-Parasite.jpeg')
+africa_spread = Image.open('./images/Africa-Spread-PhotoRoom.png')
 
 # page configuration...
 
