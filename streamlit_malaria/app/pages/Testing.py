@@ -72,7 +72,7 @@ def get_bounding_box_image(df, image):
 
 tab1, tab2, = st.tabs(["UPLOAD A BLOOD SAMPLE", "CONNECT TO MY CAMERA OR WEBCAM"])
 
-with tab1:
+with tab1: # upload a photo
     image_file = st.file_uploader(label='')
     if image_file is not None:
         img_bytes = image_file.getvalue()
@@ -96,39 +96,52 @@ with tab1:
                 res = requests.post('http://127.0.0.1:8000' + "/upload_image", files={'img': img_bytes})
                 df = pd.DataFrame.from_dict(json.loads(res.content))
                 bounding_boxes = get_bounding_box_image(df, np.asarray(uploaded_sample))
-                # im = cv2.imencode('.png', bounding_boxes)[1]
                 im = Image.fromarray(bounding_boxes).convert('RGB')
                 buffered = BytesIO()
                 im.save(buffered, format="JPEG")
                 byte_im = buffered.getvalue()
-                # display bounding_boxes_image and allow the user to download the file
-                st.image(bounding_boxes)
+                # display bounding_boxes_image with cell count in caption and allow the user to download the file
+                cell_count = df.shape[0]
+                st.session_state['bounded_image'] = bounding_boxes
+                st.image(image=bounding_boxes,caption=f'Number of cells detected {cell_count}.')
                 st.text('')
                 st.text('')
+                # allow the user to download the file
                 st.download_button(label='DOWNLOAD FILE', data=byte_im, file_name='Bounding-Boxes.png', mime = "image/png")
 
-with tab2:
-    image_file = st.camera_input("TAKE A PICTURE")
+with tab2: # take a picture
+    image_file = st.camera_input(label='')
     if image_file is not None:
         img_bytes = image_file.getvalue()
         uploaded_sample = Image.open(image_file)
     # output the image to the user to confirm that it is the right blood sample
-        col_text, col_button = st.columns(2)
-        col_text.write('This is the blood sample that will be uploaded.')
-        col_text.write('Please click "proceed" below if you want to process this sample:')
+        col_text, col_button = st.columns([3,1])
+        col_text.subheader('This is the blood sample that will be uploaded.')
+        col_text.subheader('Please click "proceed" below if you want to process this sample:')
         # user clicks proceed for bounding boxes to be drawn around cells in sample
         if 'bounded_image' in st.session_state.keys():
             bounding_boxes = st.session_state['bounded_image']
-            st.image(bounding_boxes)
-        if col_button.button('PROCEED',key=1):
+        col_button.text('')
+        col_button.text('')
+        col_button.text('')
+        if col_button.button('CONFIRM AND PROCEED',key=1):
             st.success('Success! Your sample is being processed...')
             # API CALL
             res = requests.post('http://127.0.0.1:8000' + "/upload_image", files={'img': img_bytes})
-            bounding_boxes = res.content
-            # display bounding_boxes_image and allow the user to download the file
+            df = pd.DataFrame.from_dict(json.loads(res.content))
+            bounding_boxes = get_bounding_box_image(df, np.asarray(uploaded_sample))
+            im = Image.fromarray(bounding_boxes).convert('RGB')
+            buffered = BytesIO()
+            im.save(buffered, format="JPEG")
+            byte_im = buffered.getvalue()
+            # display bounding_boxes_image with cell count in caption and allow the user to download the file
+            cell_count = df.shape[0]
             st.session_state['bounded_image'] = bounding_boxes
-            st.image(bounding_boxes)
-            st.download_button(label='DOWNLOAD FILE', data=bounding_boxes, file_name='Bounding-Boxes', mime = "image/png")
+            st.image(image=bounding_boxes,caption=f'Number of cells detected {cell_count}.')
+            st.text('')
+            st.text('')
+            # allow the user to download the file
+            st.download_button(label='DOWNLOAD FILE', data=byte_im, file_name='Bounding-Boxes.png', mime = "image/png")
 
 ###### STEP 2 - OUTPUT
 
@@ -136,7 +149,8 @@ st.header('Step 2')
 st.text('')
 st.text('')
 st.text('')
-st.write('Our model will determine malaria infection levels of the patient. Results will be displayed below.')
+st.subheader('Our model will determine the infection stage of the patient.')
+st.subheader('Please click on "generate diagnosis" below to see results.')
 st.text('')
 st.text('')
 st.text('')
@@ -145,15 +159,14 @@ st.text('')
 
 if st.button(label='GENERATE DIAGNOSIS', key=3):
     categories = df['name'].unique()
+
     if 'infected' not in categories:
         st.success('No parasitaemia detected in sample!')
     else:
-        mask1 = iter_df['name'] == 'uninfected'
-        mask2 = iter_df['name'] == 'leukocyte'
-        df = iter_df.loc[~mask1]
+        mask1 = df['name'] == 'uninfected'
+        mask2 = df['name'] == 'leukocyte'
+        df = df.loc[~mask1]
         df = df.loc[~mask2]
-        return df
-    return
 
 # API call with st.progress displayed for the user to get FINAL OUTPUT i.e. table and graph
 
@@ -166,8 +179,8 @@ if st.button(label='GENERATE DIAGNOSIS', key=3):
 
 #### TABLE
 
-results_df = pd.DataFrame(columns=['Gametocyte', 'Leukocyte', 'Red Blood Cell', 'Ring', 'Schizont','Trophozoite'],data=blood_sample_categories)
-st.table(results_df)
+# results_df = pd.DataFrame(columns=['Gametocyte', 'Leukocyte', 'Red Blood Cell', 'Ring', 'Schizont','Trophozoite'],data=blood_sample_categories)
+# st.table(results_df)
 
 #### GRAPH
 
