@@ -32,6 +32,7 @@ col_00, col_11 = st.columns([7,1])
 col_11.image(malari_eye_logo)
 
 # title
+
 st.markdown("<h1 style='text-align: right; color: black; font-size: 500%; text-shadow: 4px 4px #cfc9c9'>Microscopy results with the speed of RDTs.</h1>",
             unsafe_allow_html=True)
 
@@ -71,40 +72,7 @@ st.text('')
 
 # cnn text and shadowed image
 
-with st.container():
-    col1, col2 = st.columns([1,2])
-    col1.text('')
-    col1.text('')
-    col1.text('')
-    col1.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 20px 20px; line-height: 1.5'>Using ANNs (Artificial Neural Networks) for malaria-paratysized cell identification.</h4>",
-                    unsafe_allow_html=True)
-    col1.text('')
-    col1.text('')
-    col1.text('')
-    col1.button('READ MORE', key=0)
-    col2.image(malaria_parasite_bright)
-
-# space between images and text blocks
-st.text('')
-st.text('')
-st.text('')
-
-# text and red cell image
-with st.container():
-    col_a, col_b = st.columns([2,1])
-    col_a.image(malaria_parasite_red)
-    col_b.text('')
-    col_b.text('')
-    col_b.text('')
-    col_b.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 20px 20px; line-height: 1.5'>Lol something.</h4>",
-                    unsafe_allow_html=True)
-    col_b.text('')
-    col_b.text('')
-    col_b.text('')
-    col_b.button('CLICK HERE', key=1)
-
-
-# button function to take the user to 'The Project' page on READ MORE
+# function to make st.buttons take user to pages on side bar
 
 def nav_page(page_name, timeout_secs=3):
     nav_script = """
@@ -131,7 +99,37 @@ def nav_page(page_name, timeout_secs=3):
     """ % (page_name, timeout_secs)
     html(nav_script)
 
-if st.button('READ MORE'):
-    nav_page("The Project")
-# if st.button("Next >"):
-#     nav_page("Bar")
+with st.container():
+    col1, col2 = st.columns([1,2])
+    col1.text('')
+    col1.text('')
+    col1.text('')
+    col1.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 20px 20px; line-height: 1.5'>Using ANNs (Artificial Neural Networks) for malaria-paratysized cell identification.</h4>",
+                    unsafe_allow_html=True)
+    col1.text('')
+    col1.text('')
+    col1.text('')
+    if col1.button('READ MORE', key=0):
+        nav_page("The Project")
+    col2.image(malaria_parasite_bright)
+
+# space between images and text blocks
+st.text('')
+st.text('')
+st.text('')
+
+# text and red cell image
+with st.container():
+    col_a, col_b = st.columns([2,1])
+    col_a.image(malaria_parasite_red)
+    col_b.text('')
+    col_b.text('')
+    col_b.text('')
+    col_b.markdown("<h4 style='text-align: left; color: black; font-size: 150%; text-shadow: 1px 1px #cfc9c9; padding: 20px 20px; line-height: 1.5'>Lol something.</h4>",
+                    unsafe_allow_html=True)
+    col_b.text('')
+    col_b.text('')
+    col_b.text('')
+#   if st.button('CLICK HERE'):
+#     nav_page('Testing Area')
+    col_b.button('CLICK HERE', key=1)
