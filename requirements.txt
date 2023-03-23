@@ -1,10 +1,9 @@
 streamlit
 numpy
 Pillow
-opencv-python
+opencv-python-headless
 pandas
 numpy
 seaborn
 matplotlib
 requests
-
