@@ -13,7 +13,7 @@ from io import BytesIO
 
 # images
 
-malari_eye_logo = Image.open('./images/Malaria-Logo.png')
+malari_eye_logo = Image.open('streamlit_malaria/app/images/Malaria-Logo.png')
 
 # page configuration...
 # page title, layout

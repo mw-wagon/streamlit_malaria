@@ -38,7 +38,7 @@ st.markdown("<h1 style='text-align: right; color: black; font-size: 500%; text-s
 
 # CSS styling file opening for customisation
 
-with open('style.css') as f:
+with open('streamlit_malaria/app/style.css') as f:
     st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
 # container with Africa map image and text
