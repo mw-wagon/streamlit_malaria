@@ -11,7 +11,7 @@ import time
 from streamlit.components.v1 import html
 
 # images:
-malaria_parasite_bright = Image.open('app/images/Rounded-Bright-Cells.png')
+malaria_parasite_bright = Image.open('streamlit_malaria/app/images/Rounded-Bright-Cells.png')
 malaria_parasite_red = Image.open('app/images/Cell-Homepage2.png')
 malari_eye_logo = Image.open('app/images/Malaria-Logo.png')
 malaria_parasite = Image.open('app/images/Malaria-Parasite.jpeg')
