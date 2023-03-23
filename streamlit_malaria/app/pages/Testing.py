@@ -7,7 +7,6 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import requests
-import time
 import json
 from io import BytesIO
 
@@ -55,7 +54,6 @@ st.text('')
 
 def get_bounding_box_image(df, image):
 # Load the image; Plot the image; print(image.shape); Define the boxes
-    resized_cells = []
     img = image.copy()
     for index, row in df.iterrows():
         x = round(row['xmin'])
@@ -64,9 +62,8 @@ def get_bounding_box_image(df, image):
         y_max = round(row['ymax'])
         # breakpoint()
         img = cv2.rectangle(img, (x, y), (x_max, y_max), (255,0,0), 2)
-        resized_cells.append(image[x:x_max, y:y_max, :])
     # Add the boxes to the plot
-    return img, np.array(resized_cells)
+    return img
 
 ### TABS
 
