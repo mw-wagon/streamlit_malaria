@@ -5,6 +5,6 @@ opencv-python
 pandas
 numpy
 seaborn
-matplotlib.pyplot
+matplotlib
 requests
 time
