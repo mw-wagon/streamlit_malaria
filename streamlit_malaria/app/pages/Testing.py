@@ -93,8 +93,8 @@ with tab1: # upload a photo
                 st.success('Success! Your sample is being processed...')
                 # API CALL
                 res = requests.post('https://malari-eye-ueodddo5aa-ez.a.run.app' + "/upload_image", files={'img': img_bytes})
-                breakpoint()
                 df = pd.DataFrame.from_dict(json.loads(res.content))
+                df.shape()
                 bounding_boxes, resized_cells = get_bounding_box_image(df, np.asarray(uploaded_sample))
                 im = Image.fromarray(bounding_boxes).convert('RGB')
                 buffered = BytesIO()
