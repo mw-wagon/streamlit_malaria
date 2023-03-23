@@ -90,7 +90,7 @@ with tab1: # upload a photo
             if col_text.button(label='CONFIRM AND PROCEED', key=0):
                 st.success('Success! Your sample is being processed...')
                 # API CALL
-                res = requests.post('http://127.0.0.1:8000' + "/upload_image", files={'img': img_bytes})
+                res = requests.post('https://malari-eye-ueodddo5aa-ez.a.run.app' + "/upload_image", files={'img': img_bytes})
                 df = pd.DataFrame.from_dict(json.loads(res.content))
                 bounding_boxes, resized_cells = get_bounding_box_image(df, np.asarray(uploaded_sample))
                 im = Image.fromarray(bounding_boxes).convert('RGB')
@@ -126,7 +126,7 @@ with tab2: # take a picture
         if col_button.button('CONFIRM AND PROCEED',key=1):
             st.success('Success! Your sample is being processed...')
             # API CALL
-            res = requests.post('http://127.0.0.1:8000' + "/upload_image", files={'img': img_bytes})
+            res = requests.post('https://malari-eye-ueodddo5aa-ez.a.run.app' + "/upload_image", files={'img': img_bytes})
             df = pd.DataFrame.from_dict(json.loads(res.content))
             bounding_boxes = get_bounding_box_image(df, np.asarray(uploaded_sample))
             im = Image.fromarray(bounding_boxes).convert('RGB')
