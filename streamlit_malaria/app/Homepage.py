@@ -1,13 +1,6 @@
 # imports
 import streamlit as st
-import numpy as np
 from PIL import Image
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import requests
-import time
 from streamlit.components.v1 import html
 
 # images:

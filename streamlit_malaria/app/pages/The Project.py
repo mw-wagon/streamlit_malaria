@@ -1,13 +1,5 @@
 import streamlit as st
-import numpy as np
 from PIL import Image
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import requests
-import time
-
 # images:
 
 malaria_parasite_bright = Image.open('streamlit_malaria/app/images/Cells-Background.jpeg')
@@ -36,7 +28,7 @@ col_11.image(malari_eye_logo)
 
 # CSS styling file opening for customisation
 
-with open('style.css') as f:
+with open('streamlit_malaria/app/style.css') as f:
     st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
 # start of page
