@@ -10,7 +10,6 @@ import requests
 import time
 import json
 from io import BytesIO
-import os
 
 if 'df' not in st.session_state.keys():
     st.session_state['df'] = ''
@@ -39,7 +38,7 @@ col_11.image(malari_eye_logo)
 
 # CSS styling file opening for customisation
 
-with open('streamlit_malaria/style.css') as f:
+with open('streamlit_malaria/app/style.css') as f:
     st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
 # 'TESTING AREA'
@@ -184,7 +183,7 @@ with tab2: # take a picture
             # allow the user to download the file
             st.download_button(label='DOWNLOAD FILE', data=byte_im, file_name='Bounding-Boxes.png', mime = "image/png")
 
-###### STEP 2 - OUTPUT
+            ###### STEP 2 - OUTPUT
 
 st.header('Step 2')
 st.markdown("""<hr style="height:1px; border:none; color:#FFFFFF; background-color:#FFFFFF;" /> """, unsafe_allow_html=True)
