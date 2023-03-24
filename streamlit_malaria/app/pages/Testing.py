@@ -39,7 +39,7 @@ col_11.image(malari_eye_logo)
 
 # CSS styling file opening for customisation
 
-with open('streamlit_malaria/style.css') as f:
+with open('streamlit_malaria/app/style.css') as f:
     st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
 # 'TESTING AREA'
